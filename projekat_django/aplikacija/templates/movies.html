@@ -5,11 +5,19 @@
 {% endblock %}
 
 {%  block content %}
+    {% if not movies %}
+    <div>
+        <h1>
+            Movie list is empty
+        </h1>
+    </div>
+    {% else %}
     <div class="list-group">
         {% for movie in movies %}
-            <a class="list-group-item list-group-item-action">
-                {{ movie.name }}
+            <a class="list-group-item list-group-item-action" href="{% url 'aplikacija:movie' movie.id %}">
+                {{ movie.name }} ({{ movie.year}})
             </a>
         {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}

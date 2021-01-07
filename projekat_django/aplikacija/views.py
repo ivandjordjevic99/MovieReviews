@@ -27,7 +27,8 @@ def movie(req, id):
 
 def comments(req, id):
     tmp = Comment.objects.filter(movie=id)
-    return render(req, 'comments.html', {'comments': tmp})
+    m = Movie.objects.get(id=id)
+    return render(req, 'comments.html', {'comments': tmp, 'movie': m})
 
 
 def new_comment(req, id):
@@ -58,3 +59,22 @@ def new_movie(req):
     else:
         form = MovieForm()
         return render(req, 'newMovie.html', {'form': form})
+
+
+def edit_movie(req, id):
+    if req.method == 'POST':
+        form = MovieForm(req.POST)
+
+        if form.is_valid():
+            m = Movie.objects.get(id=id)
+            m.name = form.cleaned_data['name']
+            m.year = form.cleaned_data['year']
+            m.synopsis = form.cleaned_data['synopsis']
+            m.save()
+            return redirect('aplikacija:movies')
+        else:
+            return render(req, 'editMovie.html', {'form': form, 'id': id})
+    else:
+        m = Movie.objects.get(id=id)
+        form = MovieForm(instance=m)
+        return render(req, 'editMovie.html', {'form': form, 'id': id})
