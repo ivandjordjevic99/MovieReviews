@@ -56,7 +56,7 @@ ROOT_URLCONF = 'projekat_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'aplikacija/templates')],
+        'DIRS': ['templates', os.path.join(BASE_DIR, 'aplikacija/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
