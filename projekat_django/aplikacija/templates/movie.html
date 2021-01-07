@@ -10,6 +10,9 @@
                     <a href="{% url 'aplikacija:edit_movie' movie.id %}">
                         <span class="badge badge-dark">Edit</span>
                     </a>
+                    <a href="{% url 'aplikacija:delete_movie' movie.id %}">
+                        <span class="badge badge-dark">Delete</span>
+                    </a>
                 {% endif %}
                     <a href="{% url 'aplikacija:comments' movie.id %}">
                         <span class="badge badge-dark">See comments</span>

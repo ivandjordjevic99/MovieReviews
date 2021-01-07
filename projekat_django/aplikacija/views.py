@@ -78,3 +78,13 @@ def edit_movie(req, id):
         m = Movie.objects.get(id=id)
         form = MovieForm(instance=m)
         return render(req, 'editMovie.html', {'form': form, 'id': id})
+
+
+def delete_movie(req, id):
+    to_delete = get_object_or_404(Movie, id=id)
+    to_delete.delete()
+    return redirect('aplikacija:movies')
+
+
+def login(req):
+    return render(req, 'login.html')

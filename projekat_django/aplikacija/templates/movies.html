@@ -12,11 +12,17 @@
         </h1>
     </div>
     {% else %}
+    <div>
+        <h1>
+            Movie list:
+        </h1>
+    </div>
     <div class="list-group">
         {% for movie in movies %}
             <a class="list-group-item list-group-item-action" href="{% url 'aplikacija:movie' movie.id %}">
                 {{ movie.name }} ({{ movie.year}})
             </a>
+
         {% endfor %}
     </div>
     {% endif %}
