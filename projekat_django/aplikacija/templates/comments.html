@@ -1,0 +1,22 @@
+{%  extends 'master.html' %}
+
+{% block title %}
+    Comments
+{% endblock %}
+
+{%  block content %}
+{% for comment in comments %}
+<div class="card">
+  <div class="card-header" style="text-align:left">
+    {{ comment.user }}
+  </div>
+  <div class="card-body">
+    <p class="card-text" style="text-align:left">{{ comment.content }}</p>
+  </div>
+  <div class="card-footer text-muted" style="text-align:right">
+      {{ comment.time }}
+  </div>
+</div>
+<br/>
+{% endfor %}
+{% endblock %}

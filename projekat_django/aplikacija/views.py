@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from .models import Movie
+from .models import Comment
 # Create your views here.
 
 
@@ -20,3 +21,8 @@ def movies(req):
 def movie(req, id):
     tmp = get_object_or_404(Movie, id=id)
     return render(req, 'movie.html', {'movie': tmp, 'page_title': tmp.name})
+
+
+def comments(req, id):
+    tmp = Comment.objects.filter(movie = id)
+    return render(req, 'comments.html', {'comments': tmp})
