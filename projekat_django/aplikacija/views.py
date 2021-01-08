@@ -98,8 +98,10 @@ def delete_movie(req, id):
 def user_register(req):
     if req.method == 'POST':
         form = RegisterForm(req.POST)
-        if form.is_valid():
 
+
+        if form.is_valid():
+            print("Validan")
             if User.objects.filter(username=form.cleaned_data['username']).exists():
                 return render(req, 'register.html', {
                     'form': form,
@@ -110,14 +112,16 @@ def user_register(req):
                     'form': form,
                     'error_message': 'Email already exists.'
                 })
-            print("VALIDACIJA PROSLA")
+
             user = User.objects.create_user(
                 form.cleaned_data['username'],
                 form.cleaned_data['email'],
                 form.cleaned_data['password'],
-                form.cleaned_data['first_name'],
-                form.cleaned_data['last_name']
             )
+
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+
             user.save()
             login(req, user)
 
@@ -125,7 +129,7 @@ def user_register(req):
         else:
             return render(req, 'register.html', {
                 'form': form,
-                'error_message': 'Error.'
+                'error_message': 'Error'
             })
     else:
         form = RegisterForm()
