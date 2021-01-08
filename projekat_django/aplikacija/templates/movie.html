@@ -6,7 +6,7 @@
         <div class="card-header">
             <h1>
                 {{ movie.name }}({{ movie.year }})
-                {% if perms.aplikacija.edit_movie %}
+                {% if perms.aplikacija.change_movie %}
                     <a href="{% url 'aplikacija:edit_movie' movie.id %}">
                         <span class="badge badge-dark">Edit</span>
                     </a>

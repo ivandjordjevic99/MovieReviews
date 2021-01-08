@@ -8,7 +8,7 @@
 
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            {% if not perms.aplikacija.add_new_movie %}
+            {% if not perms.aplikacija.add_movie %}
                 <a class="nav-link disabled" href="{% url 'aplikacija:new_movie' %}">New movie</a>
             {% else %}
                 <a class="nav-link" href="{% url 'aplikacija:new_movie' %}">New movie</a>

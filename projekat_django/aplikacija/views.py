@@ -52,7 +52,7 @@ def new_comment(req, id):
         return render(req, 'newComment.html', {'form': form, 'id': id})
 
 
-@permission_required('aplikacija.add_new_movie')
+@permission_required('aplikacija.add_movie')
 def new_movie(req):
     if req.method == 'POST':
         form = MovieForm(req.POST)
@@ -68,7 +68,7 @@ def new_movie(req):
         return render(req, 'newMovie.html', {'form': form})
 
 
-@permission_required('aplikacija.edit_movie')
+@permission_required('aplikacija.change_movie')
 def edit_movie(req, id):
     if req.method == 'POST':
         form = MovieForm(req.POST)
