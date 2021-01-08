@@ -46,7 +46,7 @@ def new_comment(req, id):
             c.save()
             return redirect('aplikacija:comments', id)
         else:
-            return render(req, 'newComments.html', {'form': form, 'id': id})
+            return render(req, 'newComment.html', {'form': form, 'id': id})
     else:
         form = CommentForm()
         return render(req, 'newComment.html', {'form': form, 'id': id})
@@ -101,7 +101,6 @@ def user_register(req):
 
 
         if form.is_valid():
-            print("Validan")
             if User.objects.filter(username=form.cleaned_data['username']).exists():
                 return render(req, 'register.html', {
                     'form': form,
