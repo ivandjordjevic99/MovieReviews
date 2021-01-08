@@ -6,10 +6,12 @@
         <div class="card-header">
             <h1>
                 {{ movie.name }}({{ movie.year }})
-                {% if perms.aplikacija.change_article %}
+                {% if perms.aplikacija.edit_movie %}
                     <a href="{% url 'aplikacija:edit_movie' movie.id %}">
                         <span class="badge badge-dark">Edit</span>
                     </a>
+                {% endif %}
+                {% if perms.aplikacija.delete_movie %}
                     <a href="{% url 'aplikacija:delete_movie' movie.id %}">
                         <span class="badge badge-dark">Delete</span>
                     </a>

@@ -1,10 +1,12 @@
+from django.contrib.auth import login
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 
-from .forms import CommentForm, MovieForm
+from .forms import CommentForm, MovieForm, RegisterForm
 from .models import Movie
 from .models import Comment
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -15,22 +17,26 @@ def index(req):
         return redirect('aplikacija:movies')
 
 
+@login_required
 def movies(req):
     tmp = Movie.objects.all()
     return render(req, 'movies.html', {'movies': tmp})
 
 
+@login_required
 def movie(req, id):
     tmp = get_object_or_404(Movie, id=id)
     return render(req, 'movie.html', {'movie': tmp, 'page_title': tmp.name})
 
 
+@login_required
 def comments(req, id):
     tmp = Comment.objects.filter(movie=id)
     m = Movie.objects.get(id=id)
     return render(req, 'comments.html', {'comments': tmp, 'movie': m})
 
 
+@login_required
 def new_comment(req, id):
     if req.method == 'POST':
         form = CommentForm(req.POST)
@@ -46,6 +52,7 @@ def new_comment(req, id):
         return render(req, 'newComment.html', {'form': form, 'id': id})
 
 
+@permission_required('aplikacija.add_new_movie')
 def new_movie(req):
     if req.method == 'POST':
         form = MovieForm(req.POST)
@@ -61,6 +68,7 @@ def new_movie(req):
         return render(req, 'newMovie.html', {'form': form})
 
 
+@permission_required('aplikacija.edit_movie')
 def edit_movie(req, id):
     if req.method == 'POST':
         form = MovieForm(req.POST)
@@ -80,11 +88,45 @@ def edit_movie(req, id):
         return render(req, 'editMovie.html', {'form': form, 'id': id})
 
 
+@permission_required('aplikacija.delete_movie')
 def delete_movie(req, id):
     to_delete = get_object_or_404(Movie, id=id)
     to_delete.delete()
     return redirect('aplikacija:movies')
 
 
-def login(req):
-    return render(req, 'login.html')
+def user_register(req):
+    if req.method == 'POST':
+        form = RegisterForm(req.POST)
+        if form.is_valid():
+
+            if User.objects.filter(username=form.cleaned_data['username']).exists():
+                return render(req, 'register.html', {
+                    'form': form,
+                    'error_message': 'Username already exists.'
+                })
+            elif User.objects.filter(email=form.cleaned_data['email']).exists():
+                return render(req, 'register.html', {
+                    'form': form,
+                    'error_message': 'Email already exists.'
+                })
+            print("VALIDACIJA PROSLA")
+            user = User.objects.create_user(
+                form.cleaned_data['username'],
+                form.cleaned_data['email'],
+                form.cleaned_data['password'],
+                form.cleaned_data['first_name'],
+                form.cleaned_data['last_name']
+            )
+            user.save()
+            login(req, user)
+
+            return redirect('aplikacija:movies')
+        else:
+            return render(req, 'register.html', {
+                'form': form,
+                'error_message': 'Error.'
+            })
+    else:
+        form = RegisterForm()
+        return render(req, 'register.html', {'form': form})
